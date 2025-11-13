@@ -15,19 +15,24 @@ const numberEl = document.querySelector(".number");
 const bodyEl = document.querySelector("body");
 const highscoreEl = document.querySelector(".highscore");
 
+// Helper function
+const setMessage = function (text) {
+  messageEl.textContent = text;
+};
+
 // Event listener for the check button
 checkBtn.addEventListener("click", function () {
   const guess = Number(guessEl.value);
 
   if (!guess) {
-    messageEl.textContent = "No number! ⛔";
+    setMessage("No number! ⛔");
     return;
   }
 
   // when the guess is correct
   if (guess === secretNumber) {
     bodyEl.style.backgroundColor = "#60b347ff";
-    messageEl.textContent = "Correct Number! 🎉";
+    setMessage("Correct Number! 🎉");
     numberEl.style.width = "30rem";
     numberEl.textContent = secretNumber;
 
@@ -36,19 +41,17 @@ checkBtn.addEventListener("click", function () {
       highscoreEl.textContent = highscore;
     }
     return;
-  } else if (guess > secretNumber) {
-    messageEl.textContent = "Too High! 📈";
-  } else {
-    messageEl.textContent = "Too Low! 📉";
   }
-  console.log(guess, secretNumber);
 
-  if (score >= 1) {
+  if (score > 1) {
+    setMessage(guess > secretNumber ? "Too High! 📈" : "Too Low! 📉");
     score--;
     scoreEl.textContent = score;
   } else {
-    messageEl.textContent = "You lost the game! 💥";
+    setMessage("You lost the game! 💥");
     scoreEl.textContent = 0;
+    bodyEl.style.backgroundColor = "#ba3a3aff";
+    return;
   }
 });
 
@@ -59,7 +62,7 @@ againBtn.addEventListener("click", function () {
   secretNumber = Math.trunc(Math.random() * 20) + 1;
 
   // Reset UI
-  messageEl.textContent = "Start guessing...";
+  setMessage("Start guessing...");
   scoreEl.textContent = score;
   numberEl.textContent = "?";
   guessEl.value = "";
