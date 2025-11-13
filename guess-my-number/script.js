@@ -4,6 +4,7 @@ let secretNumber = Math.trunc(Math.random() * 20) + 1;
 
 // Initial score
 let score = 20;
+let highscore = 0;
 
 const checkBtn = document.querySelector(".check");
 const againBtn = document.querySelector(".again");
@@ -12,6 +13,7 @@ const guessEl = document.querySelector(".guess");
 const messageEl = document.querySelector(".message");
 const numberEl = document.querySelector(".number");
 const bodyEl = document.querySelector("body");
+const highscoreEl = document.querySelector(".highscore");
 
 // Event listener for the check button
 checkBtn.addEventListener("click", function () {
@@ -28,6 +30,11 @@ checkBtn.addEventListener("click", function () {
     messageEl.textContent = "Correct Number! 🎉";
     numberEl.style.width = "30rem";
     numberEl.textContent = secretNumber;
+
+    if (score > 0 && score > highscore) {
+      highscore = score;
+      highscoreEl.textContent = highscore;
+    }
     return;
   } else if (guess > secretNumber) {
     messageEl.textContent = "Too High! 📈";
