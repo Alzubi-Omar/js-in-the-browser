@@ -1,10 +1,9 @@
 // Generate a random secret number between 1 and 20
 let secretNumber = Math.trunc(Math.random() * 20) + 1;
-// document.querySelector(".number").textContent = secretNumber;
 
 // Initial score
 let score = 20;
-let highscore = 0;
+let highscore = Number(localStorage.getItem("highscore")) || 0;
 
 const checkBtn = document.querySelector(".check");
 const againBtn = document.querySelector(".again");
@@ -14,6 +13,8 @@ const messageEl = document.querySelector(".message");
 const numberEl = document.querySelector(".number");
 const bodyEl = document.querySelector("body");
 const highscoreEl = document.querySelector(".highscore");
+
+highscoreEl.textContent = highscore;
 
 // Helper function
 const setMessage = function (text) {
@@ -29,7 +30,7 @@ checkBtn.addEventListener("click", function () {
     return;
   }
 
-  // when the guess is correct
+  // Correct guess
   if (guess === secretNumber) {
     bodyEl.style.backgroundColor = "#60b347ff";
     setMessage("Correct Number! 🎉");
@@ -39,15 +40,18 @@ checkBtn.addEventListener("click", function () {
     if (score > 0 && score > highscore) {
       highscore = score;
       highscoreEl.textContent = highscore;
+      localStorage.setItem("highscore", highscore);
     }
     return;
   }
 
+  // Wrong guess
   if (score > 1) {
     setMessage(guess > secretNumber ? "Too High! 📈" : "Too Low! 📉");
     score--;
     scoreEl.textContent = score;
   } else {
+    // loss the game
     setMessage("You lost the game! 💥");
     scoreEl.textContent = 0;
     bodyEl.style.backgroundColor = "#ba3a3aff";
